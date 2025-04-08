@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cassie Maker Tool</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial;
+            margin: 0;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .container {
+            flex: 2;
+            background-color: #1c1c1c;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .right-panel {
+            flex: 1;
+            background-color: #1c1c1c;
+            padding: 20px;
+            border-radius: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 10px auto;
+            background-image: url('Data/Images/SITE90_1.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+            h2::after, h3::after {
+                content: "";
+                display: block;
+                width: 150px;
+                height: 4px;
+                background-color: yellow;
+                margin: 5px auto 15px auto;
+            }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            resize: none;
+        }
+
+        .btn-container button {
+            margin: 5px 3px;
+        }
+
+        .etiketler {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .etiket {
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            white-space: pre-line;
+        }
+
+        #preview {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            color: gray;
+            margin-top: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .word-list {
+            max-height: 500px;
+            overflow-y: scroll;
+            border-top: 1px solid #444;
+            margin-top: 10px;
+        }
+
+        .word-item {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+            .word-item:hover {
+                background-color: #444;
+            }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <div class="circle"></div>
+            <h2>Cassie Maker Tool</h2>
+            <textarea id="inputText" placeholder="Buraya yazı yazın..."></textarea>
+            <div class="btn-container">
+                <button onclick="wrapTag('b')">BOLD</button>
+                <button onclick="wrapTag('i')">ITALIC</button>
+                <button onclick="insertTag('<br>')">Alt Satır</button>
+                <button onclick="insertTag('<split>')">SPLIT</button>
+                <button onclick="wrapTag('size=20')">Size Ekle</button>
+                <button onclick="insertText('PITCH_1')">PITCH_1 Ekle</button>
+            </div>
+            <label>
+                Bir renk seçin:
+                <input type="color" id="favcolor" value="#ff0000" onchange="applyColor()">
+            </label>
+            <div id="preview"><strong>Önizleme:</strong><br><span id="rendered"></span></div>
+            <div class="etiketler">
+                <div class="etiket" onclick="kopyala('<br><b><color=#3498db>⭐ <color=#d6eaf8>Küresel Gizli Koalisyon :')">⭐ Küresel Gizli Koalisyon</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#a93226>🌐 <color=#2ecc71>Kaos İsyanı :')">🌐 Kaos İsyanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#5c72cc>🌍 <color=#ffd54f>Paranatural Savaş Komutanlığı :')">🌍 Paranatural Savaş Komutanlığı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#ffd54f>🚁 <color=#5d73cb>Olağandışı Olaylar Birimi :')">🚁 Olağandışı Olaylar Birimi</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#ffd54f>☭</color> <color=#800a0a>GRU-P</color> :')">☭ GRU-P</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#7f8c8d>🔬 <color=#f4d03f>Araştırma Departmanı :')">🔬 Araştırma Departmanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#d6eaf8>🛡️ <color=#99a3a4>Güvenlik Departmanı :')">🛡️ Güvenlik Departmanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#7b241c>👁️ <color=#283747>İstihbarat Departmanı :')">👁️ İstihbarat Departmanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#d2b4de>📡 <color=#f4f6f7>İç Güvenlik Departmanı :')">📡 İç Güvenlik Departmanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#3498db>✊ <color=#154360>Mobil Görev Gücü Departmanı :')">✊ Mobil Görev Gücü Departmanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#1c2833>👤  <color=#52be80>Dış İlişkiler Departmanı :')">👤 Dış İlişkiler Departmanı</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#641e16>🔻<color=#1c2833>Etik Komite :')">🔻 Etik Komite</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#17202a>📞 <color=#e5e7e9>## ####### : (O5 KONSEYİ)')">📞 ## ####### (O5 KONSEYİ)</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#c0392b>👤  <color=#52be80>Tesis Müdürü :')">👤 Tesis Müdürü</div>
+                <div class="etiket" onclick="kopyala('<br><b><color=#17202a>👤  <color=#f7dc6f>Tesis Etik Gözetmeni :')">👤 Tesis Etik Gözetmeni</div>
+
+            </div>
+            <footer>© 2025 Site-90 - Tüm hakları saklıdır.</footer>
+        </div>
+        <div class="right-panel">
+            <h3>Cassie Desteklediği İngilizce Kelimeler</h3>
+            <input type="text" class="search-box" id="searchInput" placeholder="Kelime ara..." oninput="filterWords()">
+            <div class="word-list" id="wordList">
+                <!-- JavaScript'te eklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const kelimeler = [
+            "Ish", "Like", ".G1", ".G2", ".G3", ".G4", ".G5", ".G6", ".G7",
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+            "30", "40", "50", "60", "70", "80", "90",
+            "A", "Able", "About", "Above", "Absolute", "Accepted", "Access", "Acid", "Acquired", "Across", "Activate",
+            "Activated", "Activating", "Activation", "Activity", "Address", "Administer", "Administered", "Adrenaline",
+            "Advanced", "Advise", "Again", "Against", "Agent", "Aid", "Airlock", "Alarm", "Alert", "Alive", "All",
+            "AllGeneratorsEngaged", "AllRemaining", "AllSecured", "Alpha", "Already", "Also", "Always", "Am", "Amount",
+            "Amplitude", "An", "Analog", "Analysis", "And", "Announcement", "Anomaly", "Answer", "Anti-", "Any", "Approach",
+            "April", "Are", "Area", "Armory", "Around", "Arrest", "Arrival", "As", "At", "Attack", "Attempt", "Attention",
+            "August", "Authorized", "Automatic", "Autonomic", "Autonomous", "Available", "Avoid", "AwaitingRecontainment",
+            "Away", "B", "Back", "Backup", "Bad", "Ban", "Bank", "Base", "Basic", "Battery", "Be", "Because", "Been", "Begun",
+            "Behavior", "Behind", "Being", "Believe", "Bell_End", "Bell_Start", "Below", "Beside", "Best", "Beta", "Between",
+            "Big", "Billiard", "Biological", "Black", "Blast", "Blue", "Board", "Body", "Both", "Bottom", "Breach", "Break",
+            "Breaker", "Broad", "Broadcast", "Build", "Built", "But", "By", "Byte", "Bytes", "C", "Cadet", "Calm", "Camera",
+            "Can", "Cannot", "Cant", "Capture", "Card", "Cassie", "CassieSystem", "Cast", "Cause", "Caution", "Cease",
+            "Celsius", "Center", "Centi", "Central", "Chamber", "Chaos", "ChaosInsurgency", "Charge", "Check", "Checkpoint",
+            "Chi", "Class", "ClassD", "Clearance", "Close", "Closed", "Code", "Come", "Command", "Command2", "Commander",
+            "Commencing", "Community", "Complete", "Completed", "Complex", "Condition", "Confirm", "Console", "Contain",
+            "Contained", "ContainedSuccessfully", "Containment", "ContainmentUnit", "Contamination", "Continue", "Control",
+            "Cooperate", "Core", "Correct", "Corrupted", "Corruption", "Could", "Course", "Credit", "Critical", "Current",
+            "Curved", "D", "Damage", "Danger", "Dark", "Data", "Date", "Day", "Deactivate", "Deactivated", "Dead", "Deca",
+            "December", "Deci", "Decision", "Decontamination", "Decrease", "Defense", "Degrees", "Delta", "Denied",
+            "Designated", "Destroy", "Destroyed", "Destruct", "Destructed", "Destruction", "Detected", "Detonate",
+            "Detonated", "Detonating", "Detonation", "Device", "Diagnostic", "Did", "Die", "Diesel", "Different", "Digital",
+            "Dimension", "Disable", "Disabled", "Disables", "Discharge", "Disease", "Disengaged", "Distance", "Divided",
+            "Division", "Do", "Doctor", "Does", "Done", "Door", "Doors", "Dose", "Down", "E", "Earth", "East", "Effect",
+            "Either", "Electric", "Electromagnetism", "Elevator", "Elevators", "Emergency", "Empty", "Enable", "Enabled",
+            "Enables", "End", "Engaged", "Engine", "Enough", "Enter", "Entire", "Entrance", "Epsilon", "Equal", "Equals",
+            "Error", "Escape", "Escort", "Escort2", "Essential", "Estimated", "Eta", "Euclid", "Evacuate", "Evacuation",
+            "Evasion", "Even", "Ever", "Every", "Evidence", "Except", "Exception", "Exclude", "Exclusion", "Execute",
+            "Executed", "Executive", "Exit", "Expiration", "Explain", "Explosion", "Explosive", "Expunged", "External",
+            "Extinguishment", "Extremely", "F", "Facility", "Fahrenheit", "Failed", "Failure", "False", "Far", "February",
+            "Feel", "Femur", "Few", "Field", "Find", "Fine", "Finished", "Fire", "First", "For", "Force", "ForceOvercharge",
+            "Forward", "Found", "Foundation", "Frequency", "Friday", "From", "Front", "Fuel", "Full", "G", "Game", "Gamma",
+            "Gas", "Gasoline", "Gate", "Gates", "General", "Generator", "Generators", "Get", "Giga", "Give", "Global", "Go",
+            "Goes", "Going", "Gone", "Good", "Got", "Gram", "Grams", "Granted", "Grave", "Great", "Greater", "Green",
+            "Grenade", "Ground", "Group", "Guard", "Gun", "H", "Hack", "Half", "Hallway", "Hand", "Hardware", "Has",
+            "HasEntered", "Have", "Hazard", "He", "Head", "Hear", "Heavy", "Hecto", "Helicopter", "Hello", "Help", "Her",
+            "Here", "High", "His", "Hit", "Hour", "How", "Human", "Hundred", "I", "Identification", "Identify", "If",
+            "Immediate", "Immediately", "Important", "In", "Include", "Inclusion", "Incorrect", "Increase", "Indentified",
+            "Infection", "Information", "Initializing", "Initiated", "InProgress", "Inside", "Installation", "Installed",
+            "Installing", "Insurgency", "Insurgent", "Intercom", "Interest", "Internal", "Intersection", "Into", "Intruder",
+            "Iota", "Is", "It", "J", "January", "Job", "Join", "July", "Jump", "June", "Just", "K", "Kappa", "Keep", "Kelvin",
+            "Keter", "Key", "Kill", "Killer", "Kilo", "King", "Kit", "Know", "L", "Laboratory", "Lambda", "Last", "Leak",
+            "Leave", "Left", "Less", "Lethal", "Letter", "Level", "Lieutenant", "Life", "Light", "Lights", "Like",
+            "Liquefied", "Liquid", "Live", "Load", "Local", "Locate", "Location", "Lock", "Lockdown", "Look", "Lost", "Low",
+            "Magnetic", "Main", "Major", "Make", "Malfunction", "Man", "Manager", "Manual", "Many", "March",
+            "Material", "May", "Me", "Med", "Medical", "Medium", "Mega", "MegaPatch2_01", "Memory", "Men",
+            "Message", "Meter", "Meters", "Micro", "Mili", "Military", "Milliard", "Million", "Minor", "Minus",
+            "Minute", "Minutes", "Mobile", "Mode", "Module", "Monday", "Month", "More", "Morphine", "Most",
+            "Move", "MtfUnit", "Mu", "Much", "Must", "My", "N", "Name", "Nano", "Nato_A", "Nato_B", "Nato_C",
+            "Nato_D", "Nato_E", "Nato_F", "Nato_G", "Nato_H", "Nato_I", "Nato_J", "Nato_K", "Nato_L", "Nato_M",
+            "Nato_N", "Nato_O", "Nato_P", "Nato_Q", "Nato_R", "Nato_S", "Nato_T", "Nato_U", "Nato_V", "Nato_W",
+            "Nato_X", "Nato_Y", "Nato_Z", "Near", "Nearby", "Nearest", "Necessary", "Neck", "Need", "Negative",
+            "Neutralize", "Never", "New", "Next", "Nice", "NineTailedFox", "No", "Nominal", "Nor", "Normal",
+            "Normalize", "North", "NorthWood", "NoSCPsLeft", "Not", "Notice", "November", "Now", "Nu", "Nuclear",
+            "Number", "O", "O5", "October", "Of", "Off", "Offline", "Often", "Old", "Omega", "Omicron", "On",
+            "Once", "Ongoing", "Online", "Only", "Open", "Operate", "Operation", "Operational", "Operative",
+            "Optimal", "Optional", "Or", "Orange", "Order", "Organism", "Other", "Out", "Outage", "OutOf",
+            "Outside", "Over", "Overall", "Overcharge", "Overheat", "Override",
+
+
+        ];
+
+
+        function wrapTag(tag) {
+            const textarea = document.getElementById("inputText");
+            const selected = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+            const newText = `<${tag}>${selected}</${tag.split('=')[0]}>`;
+            insertAtCursor(textarea, newText);
+        }
+
+        function insertTag(tag) {
+            insertAtCursor(document.getElementById("inputText"), tag);
+        }
+
+        function insertText(text) {
+            insertAtCursor(document.getElementById("inputText"), text);
+        }
+
+        function applyColor() {
+            const color = document.getElementById("favcolor").value;
+            wrapTag(`color=${color}`);
+        }
+
+        function insertAtCursor(textarea, text) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            textarea.value = before + text + after;
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + text.length;
+            renderPreview();
+        }
+
+        function renderPreview() {
+            const raw = document.getElementById("inputText").value;
+            let html = raw
+                .replace(/<b>(.*?)<\/b>/gi, "<strong>$1</strong>")
+                .replace(/<i>(.*?)<\/i>/gi, "<em>$1</em>")
+                .replace(/<br>/gi, "<br>")
+                .replace(/<split>/gi, " <strong>[SONRAKİ_CÜMLE]</strong> ")
+                .replace(/<size=(\d+)>(.*?)<\/size>/gi, '<span style="font-size:$1px;">$2</span>')
+                .replace(/<color=([#a-zA-Z0-9]+)>(.*?)<\/color>/gi, '<span style="color:$1;">$2</span>');
+            document.getElementById("rendered").innerHTML = html;
+        }
+
+        function kopyala(text) {
+            navigator.clipboard.writeText(text);
+            alert("Kopyalandı: " + text);
+        }
+
+        function filterWords() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const list = document.getElementById("wordList");
+            list.innerHTML = '';
+            let matched = false;
+            kelimeler.forEach(kelime => {
+                if (kelime.toLowerCase().includes(input)) {
+                    const div = document.createElement("div");
+                    div.className = "word-item";
+                    div.innerText = kelime;
+                    div.onclick = () => insertText(kelime);
+                    list.appendChild(div);
+                    matched = true;
+                }
+            });
+            if (!matched) {
+                const div = document.createElement("div");
+                div.style.color = "gray";
+                div.innerText = "Aradığın Kelime Yok";
+                list.appendChild(div);
+            }
+        }
+        window.onload = filterWords;
+
+        document.getElementById("inputText").addEventListener("input", renderPreview);
+        renderPreview();
+    </script>
+</body>
+</html>
